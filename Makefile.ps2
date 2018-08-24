@@ -4,18 +4,16 @@ CFLAGS = -I . -I $(PS2SDK)/ports/include -fsigned-char -O2 -G0  -DLITTLE_ENDIAN=
 
 EE_TARGET = libtremor.a
 
-# EE_OBJS = alloc.o header.o decode.o slice.o motion_comp.o idct.o cpu_accel.o cpu_state.o
-#EE_OBJS = bitwise.o block.o codebook.o floor0.o floor1.o framing.o info.o mapping0.o mdct.o registry.o res012.o sharedbook.o synthesis.o vorbisfile.o window.o
-
 EE_OBJS = mdct.o block.o codebook.o floor0.o floor1.o info.o mapping0.o registry.o res012.o sharedbook.o synthesis.o vorbisfile.o window.o
 
 all: $(EE_TARGET)
 
 clean:
-	rm -f $(EE_TARGET) $(EE_OBJS)
+	rm -f $(EE_TARGET) $(EE_OBJS) bitwise.o framing.o
 
 $(EE_TARGET): $(EE_OBJS)
-	ar rv $(EE_TARGET) $(EE_OBJS)
+	ar x $(DESTDIR)$(PS2SDK)/ports/lib/libogg.a
+	ar rv $(EE_TARGET) $(EE_OBJS) bitwise.o framing.o
 	ranlib $(EE_TARGET)
 
 %.o: %.c
